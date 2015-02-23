@@ -8,27 +8,30 @@ import os.path
 import sys
 
 # get all file list recursively 
-def GetFileList(targetDir):
+def getFileList(targetDir):
 
-    def FileOrDir(targetDir):
-        tmp = os.listdir(targetDir)
+    # get file and dir in current directory 
+    def getFileAndDir(targetDir):
         files = []
-        dir = []
+        dirs = []
+
+        tmp = os.listdir(targetDir)
 
         for i in range(len(tmp)):
-            if os.path.isdir(targetDir+'/'+tmp[i]):
-                dir.append(targetDir+'/'+tmp[i])
+            if os.path.isdir(targetDir + '/' +tmp[i]):
+                dirs.append(targetDir + '/' + tmp[i])
             else:
                 # ignore DS_store
                 if ".DS_Store" != tmp[i]:
-                    files.append(targetDir+'/'+tmp[i])
+                    files.append(targetDir + '/' + tmp[i])
          
-        return dir,files
+        return dirs, files
 
-    dir,files = FileOrDir(targetDir)
-    while (dir != []):
-        addDir,addFiles = FileOrDir(dir.pop())
-        dir = dir + addDir
+    dirs, files = getFileAndDir(targetDir)
+    while (dirs != []):
+        # check last item and remove it
+        addDir, addFiles = getFileAndDir(dirs.pop())
+        dirs = dirs + addDir
         files = files + addFiles
     return files
 
@@ -45,7 +48,7 @@ if __name__ == '__main__':
     okList = []
 
     targetPath = '.'
-    files = GetFileList(targetPath)
+    files = getFileList(targetPath)
 
     # command line params
     argvs = sys.argv
@@ -53,9 +56,9 @@ if __name__ == '__main__':
     if len(argvs) != 1: 
         minWidth = int(argvs[1])
 
-    print '----------------' # line break
-    print '----CHECK START-----'
-    print '----------------' # line break
+    print '----------------' 
+    print '---CHECKSTART---'
+    print '----------------' 
 
     for file in files:
         ext = os.path.splitext(file)[1]
@@ -77,20 +80,20 @@ if __name__ == '__main__':
 
         print '' # line break
 
-    print '----------------' # line break
-    print '----CHECK END-----'
-    print '----------------' # line break
+    print '----------------' 
+    print '---CHECK END----'
+    print '----------------' 
 
-    print '----------------' # line break
+    print '----------------' 
     print '----OK LIST-----'
-    print '----------------' # line break
+    print '----------------' 
     print u'count:' + str(len(okList))
     for ok in okList:
        print ok 
 
-    print '----------------' # line break
+    print '----------------' 
     print '----NG LIST-----'
-    print '----------------' # line break
+    print '----------------' 
     print u'count:' + str(len(ngList))
     for ng in ngList:
        print ng
